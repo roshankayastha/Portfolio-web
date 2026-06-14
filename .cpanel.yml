@@ -1,0 +1,8 @@
+---
+# cPanel automatic deployment configuration
+# NOTE: Replace 'YOUR_CPANEL_USERNAME' with your actual cPanel username in the line below.
+# (You can find this username in the upper-right corner of your cPanel homepage).
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/yogaadve/kayastharoshan.com.np/
+    - /bin/rsync -avz --exclude='.git*' --exclude='.cpanel.yml' ./ $DEPLOYPATH
