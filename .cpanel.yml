@@ -5,4 +5,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/yogaadve/kayastharoshan.com.np/
-    - /bin/rsync -avz --exclude='.git*' --exclude='.cpanel.yml' ./ $DEPLOYPATH
+    - cp -R ./index.html ./style.css ./script.js ./assets $DEPLOYPATH
