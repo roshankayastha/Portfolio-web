@@ -40,6 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Scroll Reveal
   const reveals = document.querySelectorAll('.reveal');
 
+  // Testimonials Slider
+  const testimonialCards = document.querySelectorAll('.testimonial-card');
+  const prevSlideBtn = document.getElementById('prevSlideBtn');
+  const nextSlideBtn = document.getElementById('nextSlideBtn');
+  const currentSlideNum = document.getElementById('currentSlideNum');
+  let currentSlideIndex = 0;
+
   /* ==========================================================================
      THEME TOGGLE SYSTEM (Light / Dark)
      ========================================================================== */
@@ -291,6 +298,36 @@ document.addEventListener('DOMContentLoaded', () => {
     progressBars.forEach(bar => {
       const targetPct = bar.getAttribute('data-width');
       bar.style.width = targetPct;
+    });
+  }
+
+  /* ==========================================================================
+     TESTIMONIALS SLIDER SYSTEM
+     ========================================================================== */
+  if (testimonialCards.length > 0 && prevSlideBtn && nextSlideBtn && currentSlideNum) {
+    function showSlide(index) {
+      testimonialCards.forEach((card, i) => {
+        if (i === index) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      });
+      currentSlideNum.textContent = String(index + 1).padStart(2, '0');
+      currentSlideIndex = index;
+    }
+
+    prevSlideBtn.addEventListener('click', () => {
+      let index = currentSlideIndex - 1;
+      if (index < 0) {
+        index = testimonialCards.length - 1;
+      }
+      showSlide(index);
+    });
+
+    nextSlideBtn.addEventListener('click', () => {
+      let index = (currentSlideIndex + 1) % testimonialCards.length;
+      showSlide(index);
     });
   }
 
