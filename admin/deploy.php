@@ -40,19 +40,26 @@ if (!function_exists('exec')) {
     exit;
 }
 
-// cPanel UAPI command to pull from remote and deploy via .cpanel.yml
-$command = "uapi VersionControl update repository_root=" . escapeshellarg(REPOSITORY_PATH) . " 2>&1";
+// 1. Run cPanel pull (UAPI update with branch specified)
+$pull_command = "uapi VersionControl update repository_root=" . escapeshellarg(REPOSITORY_PATH) . " branch=master 2>&1";
+$pull_output = [];
+$pull_retval = 0;
+exec($pull_command, $pull_output, $pull_retval);
 
-$output = [];
-$retval = 0;
-exec($command, $output, $retval);
+// 2. Run cPanel deploy (UAPI VersionControlDeployment create)
+$deploy_command = "uapi VersionControlDeployment create repository_root=" . escapeshellarg(REPOSITORY_PATH) . " 2>&1";
+$deploy_output = [];
+$deploy_retval = 0;
+exec($deploy_command, $deploy_output, $deploy_retval);
 
-if ($retval === 0) {
-    echo "SUCCESS: cPanel Git repository updated and deployed successfully!\n\n";
+if ($pull_retval === 0 && $deploy_retval === 0) {
+    echo "SUCCESS: cPanel Git repository pulled and deployed successfully!\n\n";
 } else {
-    echo "FAILED: cPanel Git deployment failed with exit code $retval.\n\n";
+    echo "FAILED: Git pull or deployment failed.\n\n";
 }
 
-echo "Command executed: $command\n";
-echo "Command Output:\n";
-echo implode("\n", $output);
+echo "Pull Command: $pull_command\n";
+echo "Pull Output:\n" . implode("\n", $pull_output) . "\n\n";
+
+echo "Deploy Command: $deploy_command\n";
+echo "Deploy Output:\n" . implode("\n", $deploy_output) . "\n";
