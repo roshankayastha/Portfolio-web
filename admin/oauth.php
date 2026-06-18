@@ -7,7 +7,7 @@
 // ==========================================
 // 1. CONFIGURATION: Paste your GitHub Developer App keys here
 // ==========================================
-define('GITHUB_CLIENT_ID', 'YOUR_GITHUB_CLIENT_ID');
+define('GITHUB_CLIENT_ID', 'Ov23lilKd1LsCzJIGzxw');
 define('GITHUB_CLIENT_SECRET', 'YOUR_GITHUB_CLIENT_SECRET');
 
 // Determine host URL automatically to configure callback
