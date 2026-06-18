@@ -2,8 +2,8 @@ backend:
   name: github
   repo: roshankayastha/Portfolio-web
   branch: master
-  # REPLACE with your live domain (no trailing slash) when uploading to cPanel
-  base_url: https://yourdomain.com
+  # Live website domain
+  base_url: https://kayastharoshan.com.np
   # Path to the self-hosted PHP helper script
   auth_endpoint: admin/oauth.php
 
