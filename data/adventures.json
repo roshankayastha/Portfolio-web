@@ -1,25 +1,11 @@
 {
   "entries": [
     {
-      "title": "Annapurna Circuit Trekking",
-      "location": "Annapurna Range, Nepal",
+      "title": "Bobby in the Garden",
+      "location": "Bhaktapur, Nepal",
       "date": "Nov 2025",
-      "photo": "https://picsum.photos/id/510/1920/1280.webp",
-      "description": "An adventurous journey crossing the Thorong La Pass at 5,416m, witnessing majestic peaks and high-altitude vistas."
-    },
-    {
-      "title": "Kushma Bungee Jumping",
-      "location": "Kushma, Parbat, Nepal",
-      "date": "Feb 2026",
-      "photo": "https://picsum.photos/id/244/1920/1280.webp",
-      "description": "Taking the leap from the world's second highest suspension bridge bungee jump over the wild Kali Gandaki river canyon."
-    },
-    {
-      "title": "Kathmandu Valley Photo Walks",
-      "location": "Patan Durbar Square, Nepal",
-      "date": "April 2026",
-      "photo": "https://picsum.photos/id/935/1920/1280.webp",
-      "description": "Documenting ancient Newari architecture, heritage structures, and street culture through graphic visual capture."
+      "photo": "/assets/adventures/1779008809806.jpg",
+      "description": "Bobby, a black and white tuxedo cat, sits among wild green grass and bright yellow wildflowers on a sunny day."
     }
   ]
 }
