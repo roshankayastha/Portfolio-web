@@ -8,7 +8,7 @@
 // 1. CONFIGURATION: Paste your GitHub Developer App keys here
 // ==========================================
 define('GITHUB_CLIENT_ID', 'Ov23lilKd1LsCzJIGzxw');
-define('GITHUB_CLIENT_SECRET', 'YOUR_GITHUB_CLIENT_SECRET');
+define('GITHUB_CLIENT_SECRET', '27291489d219c01d4b143524246c510e0b4b95dc');
 
 // Determine host URL automatically to configure callback
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
