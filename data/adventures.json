@@ -1,0 +1,25 @@
+{
+  "entries": [
+    {
+      "title": "Annapurna Circuit Trekking",
+      "location": "Annapurna Range, Nepal",
+      "date": "Nov 2025",
+      "photo": "assets/project_yoga.png",
+      "description": "An adventurous journey crossing the Thorong La Pass at 5,416m, witnessing majestic peaks and high-altitude vistas."
+    },
+    {
+      "title": "Kushma Bungee Jumping",
+      "location": "Kushma, Parbat, Nepal",
+      "date": "Feb 2026",
+      "photo": "assets/project_arts.png",
+      "description": "Taking the leap from the world's second highest suspension bridge bungee jump over the wild Kali Gandaki river canyon."
+    },
+    {
+      "title": "Kathmandu Valley Photo Walks",
+      "location": "Patan Durbar Square, Nepal",
+      "date": "April 2026",
+      "photo": "assets/roshan.jpg",
+      "description": "Documenting ancient Newari architecture, heritage structures, and street culture through graphic visual capture."
+    }
+  ]
+}

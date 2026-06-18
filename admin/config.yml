@@ -1,0 +1,28 @@
+backend:
+  name: github
+  repo: roshankayastha/Portfolio-web
+  branch: master
+
+# Enables local file system / proxy server access for development
+local_backend: true
+
+media_folder: "assets/adventures"
+public_folder: "assets/adventures"
+
+collections:
+  - name: "adventures_collection"
+    label: "Adventure Journal"
+    files:
+      - name: "adventures"
+        label: "Journal List"
+        file: "data/adventures.json"
+        fields:
+          - name: "entries"
+            label: "Journal Entries"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string", required: true }
+              - { label: "Location", name: "location", widget: "string", required: true }
+              - { label: "Date", name: "date", widget: "string", required: true }
+              - { label: "Photo", name: "photo", widget: "image", required: true }
+              - { label: "Description", name: "description", widget: "text", required: true }

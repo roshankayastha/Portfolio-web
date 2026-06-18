@@ -251,6 +251,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modalGithubLink.href = data.github;
     modalLiveLink.href = data.live;
+    
+    // Ensure project buttons are visible
+    modalGithubLink.style.display = 'inline-flex';
+    modalLiveLink.style.display = 'inline-flex';
 
     modal.classList.add('active');
     document.body.style.overflow = 'hidden'; // Stop body scrolling
@@ -600,4 +604,97 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize canvas
   initHeroCanvas();
+
+  /* ==========================================================================
+     ADVENTURE JOURNAL DATA FETCH & RENDER
+     ========================================================================== */
+  function loadAdventures() {
+    const grid = document.getElementById('adventuresGrid');
+    if (!grid) return;
+
+    fetch('data/adventures.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!data || !data.entries || data.entries.length === 0) {
+          grid.innerHTML = '<div class="loading-state" style="font-family: var(--ff-mono); font-size: 0.85rem; color: var(--text-muted); padding: 2rem 0;">No adventure logs posted yet.</div>';
+          return;
+        }
+
+        grid.innerHTML = '';
+        data.entries.forEach((entry, idx) => {
+          const card = document.createElement('article');
+          card.className = 'adventure-card';
+          card.id = `adventure-${idx}`;
+          
+          card.innerHTML = `
+            <div class="adventure-img-wrapper">
+              <img src="${entry.photo}" alt="${entry.title}" class="adventure-img" loading="lazy">
+              <div class="adventure-overlay">
+                <span class="adventure-overlay-info">Read Log <i class="fas fa-arrow-right"></i></span>
+              </div>
+            </div>
+            <div class="adventure-content">
+              <div class="adventure-meta">
+                <span class="adventure-date">${entry.date}</span>
+                <span class="adventure-location">
+                  <i class="fas fa-map-marker-alt"></i> ${entry.location}
+                </span>
+              </div>
+              <h3 class="adventure-title">${entry.title}</h3>
+              <p class="adventure-desc">${entry.description}</p>
+            </div>
+          `;
+
+          card.addEventListener('click', () => {
+            openAdventureModal(entry);
+          });
+
+          grid.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Error loading adventures:', error);
+        grid.innerHTML = '<div class="loading-state" style="font-family: var(--ff-mono); font-size: 0.85rem; color: #ef4444; padding: 2rem 0;">Failed to load journal logs.</div>';
+      });
+  }
+
+  function openAdventureModal(entry) {
+    modalImg.src = entry.photo;
+    modalImg.alt = entry.title + " Photo";
+    modalTitle.textContent = entry.title;
+    modalDesc.textContent = entry.description;
+    
+    modalTags.innerHTML = '';
+    
+    const dateSpan = document.createElement('span');
+    dateSpan.className = 'project-tag';
+    dateSpan.innerHTML = `<i class="fas fa-calendar-alt"></i> ${entry.date}`;
+    modalTags.appendChild(dateSpan);
+
+    const locSpan = document.createElement('span');
+    locSpan.className = 'project-tag';
+    locSpan.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${entry.location}`;
+    modalTags.appendChild(locSpan);
+
+    modalTechTags.innerHTML = '';
+    const span = document.createElement('span');
+    span.className = 'tech-tag';
+    span.textContent = 'Outdoor Expedition Log';
+    modalTechTags.appendChild(span);
+
+    // Hide links for photos/adventures
+    modalGithubLink.style.display = 'none';
+    modalLiveLink.style.display = 'none';
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Load adventure journal items
+  loadAdventures();
 });
