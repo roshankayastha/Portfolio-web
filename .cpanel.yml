@@ -5,4 +5,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/yogaadve/kayastharoshan.com.np/
-    - cp -R ./index.html ./style.css ./script.js ./assets $DEPLOYPATH
+    - cp -R ./index.html ./style.css ./script.js ./assets ./admin ./data $DEPLOYPATH
