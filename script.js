@@ -403,4 +403,201 @@ document.addEventListener('DOMContentLoaded', () => {
     formStatus.className = `form-status ${type}`;
     formStatus.style.display = 'block';
   }
+
+  /* ==========================================================================
+     INTERACTIVE GENERATIVE CANVAS AURA
+     ========================================================================== */
+  function initHeroCanvas() {
+    const canvas = document.getElementById('heroCanvas');
+    const heroSection = document.getElementById('home');
+    if (!canvas || !heroSection) return;
+
+    const ctx = canvas.getContext('2d');
+    
+    // Set display resolution (incorporate devicePixelRatio for sharp rendering)
+    let dpr = window.devicePixelRatio || 1;
+    let width = 0;
+    let height = 0;
+
+    function resizeCanvas() {
+      const rect = heroSection.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Color definitions based on current active theme
+    function getThemeColors() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        return {
+          blob1: 'rgba(110, 109, 103, 0.12)',  // Accent color
+          blob2: 'rgba(166, 165, 157, 0.08)',  // Secondary color
+          blob3: 'rgba(244, 243, 239, 0.04)',  // Primary color
+          mouseBlob: 'rgba(166, 165, 157, 0.14)'
+        };
+      } else {
+        return {
+          blob1: 'rgba(140, 139, 130, 0.15)',  // Accent color
+          blob2: 'rgba(94, 93, 87, 0.08)',    // Secondary color
+          blob3: 'rgba(21, 21, 21, 0.04)',     // Primary color
+          mouseBlob: 'rgba(94, 93, 87, 0.12)'
+        };
+      }
+    }
+
+    let colors = getThemeColors();
+
+    // Re-evaluate colors when theme changes
+    const themeToggleBtn = document.getElementById('themeToggle');
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        setTimeout(() => {
+          colors = getThemeColors();
+        }, 50);
+      });
+    }
+
+    class Blob {
+      constructor(baseRadius) {
+        this.baseRadius = baseRadius;
+        this.radius = baseRadius;
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.colorIndex = Math.floor(Math.random() * 3);
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Gentle boundaries check with cushioning bounce
+        if (this.x < -this.radius) {
+          this.x = -this.radius;
+          this.vx *= -1;
+        } else if (this.x > width + this.radius) {
+          this.x = width + this.radius;
+          this.vx *= -1;
+        }
+
+        if (this.y < -this.radius) {
+          this.y = -this.radius;
+          this.vy *= -1;
+        } else if (this.y > height + this.radius) {
+          this.y = height + this.radius;
+          this.vy *= -1;
+        }
+      }
+
+      draw() {
+        let color;
+        if (this.colorIndex === 0) color = colors.blob1;
+        else if (this.colorIndex === 1) color = colors.blob2;
+        else color = colors.blob3;
+
+        const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+        grad.addColorStop(0, color);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // Instantiate blobs (responsive sizing)
+    const baseVal = Math.min(width, height);
+    const blobs = [
+      new Blob(baseVal * 0.45),
+      new Blob(baseVal * 0.35),
+      new Blob(baseVal * 0.55)
+    ];
+
+    // Handle mouse movement coordinates
+    let mouse = { x: 0, y: 0, targetX: 0, targetY: 0, active: false };
+
+    heroSection.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.targetX = e.clientX - rect.left;
+      mouse.targetY = e.clientY - rect.top;
+      mouse.active = true;
+    });
+
+    heroSection.addEventListener('mouseleave', () => {
+      mouse.active = false;
+    });
+
+    // Intersection Observer to pause drawing loop when out of viewport
+    let isVisible = true;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isVisible = entry.isIntersecting;
+      });
+    }, { threshold: 0.05 });
+    
+    observer.observe(heroSection);
+
+    function animate() {
+      if (!isVisible) {
+        requestAnimationFrame(animate);
+        return;
+      }
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Interpolate mouse coordinates smoothly
+      if (mouse.active) {
+        mouse.x += (mouse.targetX - mouse.x) * 0.08;
+        mouse.y += (mouse.targetY - mouse.y) * 0.08;
+
+        const mouseRadius = baseVal * 0.35;
+        const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, mouseRadius);
+        grad.addColorStop(0, colors.mouseBlob);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, mouseRadius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Draw and update floaters
+      blobs.forEach(blob => {
+        if (mouse.active) {
+          const dx = blob.x - mouse.x;
+          const dy = blob.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist < 400) {
+            const force = (400 - dist) * 0.0001;
+            blob.vx += dx * force;
+            blob.vy += dy * force;
+            
+            const speed = Math.sqrt(blob.vx * blob.vx + blob.vy * blob.vy);
+            if (speed > 1.2) {
+              blob.vx = (blob.vx / speed) * 1.2;
+              blob.vy = (blob.vy / speed) * 1.2;
+            }
+          }
+        }
+
+        blob.update();
+        blob.draw();
+      });
+
+      requestAnimationFrame(animate);
+    }
+    
+    animate();
+  }
+
+  // Initialize canvas
+  initHeroCanvas();
 });

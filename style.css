@@ -428,6 +428,18 @@ img {
   align-items: center;
   padding-top: 9rem;
   padding-bottom: 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .hero-grid {
@@ -435,6 +447,8 @@ img {
   grid-template-columns: 1.1fr 0.9fr;
   gap: 4rem;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-content {
