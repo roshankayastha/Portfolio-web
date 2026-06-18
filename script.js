@@ -635,18 +635,20 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="adventure-img-wrapper">
               <img src="${entry.photo}" alt="${entry.title}" class="adventure-img" loading="lazy">
               <div class="adventure-overlay">
-                <span class="adventure-overlay-info">Read Log <i class="fas fa-arrow-right"></i></span>
+                <div class="adventure-meta">
+                  <span class="adventure-date">${entry.date}</span>
+                  <span class="adventure-location">
+                    <i class="fas fa-map-marker-alt"></i> ${entry.location}
+                  </span>
+                </div>
+                <div class="adventure-content">
+                  <h3 class="adventure-title">${entry.title}</h3>
+                  <p class="adventure-desc">${entry.description}</p>
+                  <span class="adventure-overlay-info">
+                    Read Expedition Log <i class="fas fa-arrow-right"></i>
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="adventure-content">
-              <div class="adventure-meta">
-                <span class="adventure-date">${entry.date}</span>
-                <span class="adventure-location">
-                  <i class="fas fa-map-marker-alt"></i> ${entry.location}
-                </span>
-              </div>
-              <h3 class="adventure-title">${entry.title}</h3>
-              <p class="adventure-desc">${entry.description}</p>
             </div>
           `;
 
