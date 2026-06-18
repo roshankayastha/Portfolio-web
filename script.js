@@ -612,7 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('adventuresGrid');
     if (!grid) return;
 
-    fetch('data/adventures.json')
+    fetch('data/adventures.json?v=' + Date.now())
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
